@@ -11,22 +11,8 @@ import type { BackupOptions } from './types'
 export default function(_options: BackupOptions) {
   const options = Object.assign({}, _options, {databaseStartPath: ''})
 
-  let accountCredentialsContents: Object
-  if (typeof options.accountCredentials === 'string') {
-    try {
-      const accountCredentialsBuffer = fs.readFileSync(options.accountCredentials)
-      accountCredentialsContents = JSON.parse(accountCredentialsBuffer.toString())
-    } catch (error) {
-      throw new Error('Unable to read account credential file \'' + options.accountCredentials + '\': ' + error)
-    }
-  } else if (typeof options.accountCredentials === 'object') {
-    accountCredentialsContents = options.accountCredentials
-  } else {
-    throw new Error('No account credentials provided')
-  }
-
   Firebase.initializeApp({
-    credential: Firebase.credential.cert(accountCredentialsContents)
+    credential: Firebase.credential.applicationDefault()
   })
 
   try {

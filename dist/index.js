@@ -4,27 +4,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 exports.default = function (_options) {
   var options = Object.assign({}, _options, { databaseStartPath: '' });
 
-  var accountCredentialsContents = void 0;
-  if (typeof options.accountCredentials === 'string') {
-    try {
-      var accountCredentialsBuffer = _fs2.default.readFileSync(options.accountCredentials);
-      accountCredentialsContents = JSON.parse(accountCredentialsBuffer.toString());
-    } catch (error) {
-      throw new Error('Unable to read account credential file \'' + options.accountCredentials + '\': ' + error);
-    }
-  } else if (_typeof(options.accountCredentials) === 'object') {
-    accountCredentialsContents = options.accountCredentials;
-  } else {
-    throw new Error('No account credentials provided');
-  }
-
   _firebaseAdmin2.default.initializeApp({
-    credential: _firebaseAdmin2.default.credential.cert(accountCredentialsContents)
+    credential: _firebaseAdmin2.default.credential.applicationDefault()
   });
 
   try {

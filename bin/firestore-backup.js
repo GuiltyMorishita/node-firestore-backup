@@ -24,25 +24,11 @@ var requestCountLimitParamKey = 'requestCountLimit'
 var requestCountLimitParamDescription = 'The maximum number of requests to be made in parallel.'
 
 commander.version('1.0.1')
-  .option('-a, --' + accountCredentialsPathParamKey + ' <path>', accountCredentialsPathParamDescription)
   .option('-B, --' + backupPathParamKey + ' <path>', backupPathParamDescription)
   .option('-P, --' + prettyPrintParamKey, prettyPrintParamDescription)
   .option('-S, --' + databaseStartPathParamKey + ' <path>', databaseStartPathParamDescription)
   .option('-L, --' + requestCountLimitParamKey + ' <number>', requestCountLimitParamDescription)
   .parse(process.argv)
-
-const accountCredentialsPath = commander[accountCredentialsPathParamKey]
-if (!accountCredentialsPath) {
-  console.log(colors.bold(colors.red('Missing: ')) + colors.bold(accountCredentialsPathParamKey) + ' - ' + accountCredentialsPathParamDescription)
-  commander.help()
-  process.exit(1)
-}
-
-if (!fs.existsSync(accountCredentialsPath)) {
-  console.log(colors.bold(colors.red('Account credentials file does not exist: ')) + colors.bold(accountCredentialsPath))
-  commander.help()
-  process.exit(1)
-}
 
 const backupPath = commander[backupPathParamKey]
 if (!backupPath) {
@@ -61,7 +47,6 @@ var firestoreBackup = require('../dist/index.js')
 try {
   console.time('backuptime')
   firestoreBackup.default({
-    accountCredentials: accountCredentialsPath,
     databaseStartPath,
     backupPath,
     prettyPrintJSON,
